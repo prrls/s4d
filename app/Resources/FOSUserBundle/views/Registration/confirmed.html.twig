@@ -1,0 +1,16 @@
+{% extends "@FOSUser/layout.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block fos_user_content %}
+<div class="accueil">
+    <div class="logoaccueil"><img src="{{ asset('assets/images/logo') }}.svg"></div>
+    <div class="pagelog">
+        <p>{{ 'registration.confirmed'|trans({'%username%': user.username}) }}</p>
+    {% if targetUrl %}
+    <p><a href="{{ targetUrl }}">{{ 'registration.back'|trans }}</a></p>
+    {% endif %}
+
+    </div>
+</div>
+{% endblock fos_user_content %}

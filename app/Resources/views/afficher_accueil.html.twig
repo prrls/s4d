@@ -1,0 +1,25 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Amazons !{% endblock %}
+
+{% block stylesheets %}
+
+
+{% endblock %}
+
+
+{% block body %}
+   <div class="accueil2">
+    <section class="rain">
+        <div class="logoaccueil"><img src="{{ asset('assets/images/logo') }}.svg"></div>
+        <div id="amazonegauche"><img src="{{ asset('assets/images/accueilamazonegauche') }}.svg"></div>
+        <div id="amazonedroite"><img src="{{ asset('assets/images/accueilamazonedroite') }}.svg"></div>
+        <div class="connexion"><a href="{{ path('fos_user_security_login') }}"> se connecter</a></div>
+        <div class="connexion"><a href="{{ path('fos_user_registration_register') }}"> créer un compte</a></div>
+    </section>
+   </div>
+
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}

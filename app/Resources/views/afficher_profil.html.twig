@@ -1,0 +1,66 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:JouerController:afficherPlateau{% endblock %}
+
+{% block stylesheets %}
+
+
+{% endblock %}
+
+
+{% block body %}
+    <div class="accueil">
+        <div class="logoaccueil"><img src="{{ asset('assets/images/logo') }}.svg"></div>
+        <div class="pagelog">
+            <h1>Mon profil</h1>
+
+
+
+            <div class="connexion" id="nouvellepartie"><a href="{{ path('app_jouer_nouvellepartie') }}">Créer une nouvelle partie</a></div>
+            <h2>{{ nbparties }} parties en cours</h2>
+                <ul>
+                    {% set myVal = 1 %}
+                        {% for partie in partieJ1 %}
+                            <li>&#8611;<a href="{{ path('affiche_plateau',{partie:partie.id}) }}"> Partie {{myVal}} - Adversaire : {{ partie.joueur2 }}</a> -
+                            {% if partie.tourjoueur == partie.joueur1 %}A vous de jouer !{% else %}En attente de l'adversaire{% endif %}</li>
+                            {% set myVal = myVal + 1 %}
+                        {% endfor %}
+
+                    {% for partie in partieJ2 %}
+                        <li>&#8611;<a href="{{ path('affiche_plateau',{partie:partie.id}) }}"> Partie {{myVal}} - Adversaire : {{ partie.joueur1 }}</a> -
+                            {% if partie.tourjoueur == partie.joueur2 %}A vous de jouer !{% else %}En attente de l'adversaire{% endif %}</li>
+                        {% set myVal = myVal + 1 %}
+                    {% endfor %}
+                </ul>
+
+
+            <h2>{{ nbpf }} parties finies</h2>
+            <ul>
+                {% set myValf = 1 %}
+                {% for partie in pJ1f %}
+                    {% if partie.gagnant == partie.joueur1 %}
+                        <li>&#8611; Vous avez gagné contre {{ partie.joueur2 }}</li>
+                    {% else %}
+                        <li>&#8611; {{ partie.joueur2 }} vous a battu</li>
+                    {% endif %}
+                    {% set myValf = myValf + 1 %}
+                {% endfor %}
+
+                {% for partie in pJ2f %}
+                    {% if partie.gagnant == partie.joueur2 %}
+                        <li>&#8611; Vous avez gagné contre {{ partie.joueur1 }}</li>
+                    {% else %}
+                        <li>&#8611; {{ partie.joueur1 }} vous a battu</li>
+                    {% endif %}
+                    {% set myValf = myValf + 1 %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}

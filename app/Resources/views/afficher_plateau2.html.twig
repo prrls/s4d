@@ -1,0 +1,129 @@
+{% if partie.gagnant == true %}
+    <h1>le gagnant est : {{ partie.gagnant }}</h1>
+{% endif %}
+
+
+<div id="plateau">
+{% if partie.gagnant == true %}
+<div id="plateaugagnant">
+    <div class="fin"><h1>La partie est finie !</h1></div><div class="button"><h1>le gagnant est :  {{ partie.gagnant }}</h1><p><a href="{{ path('profil') }}" id="rejouer">Revenir à votre profil</a></p></div>
+</div>
+
+{% endif %}
+    <h2 id="adversaire">Adversaire<br>{{ adversaire.username }}</h2>
+
+    <!-- TERRAIN ADVERSAIRE -->
+    <div class="terrain">
+        {% for i in 0..8 %}
+            <div class="colonne">
+                {% for carte_id in terrainadversaire['col'~i] %}
+                        {% if carte_id == 0 %}
+                            <div class="minicarte-libre">
+                            Libre
+                        {% else %}
+                            <div class="minicarte">
+                            <img src="{{ asset('assets/images/cartes/') }}{{ tcartes[carte_id].id }}.svg">
+                            <!--<p class="numero">{{ tcartes[carte_id].numero }} . {{ tcartes[carte_id].id }}</p>-->
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+
+
+    <!-- LIGNE BORNES -->
+    <div class="bornes">
+        {% for borne in partie.listeDesBornes %}
+            <div class="borne">
+
+                {% if borne.position == 'neutre' %}
+                    <img src="{{ asset('assets/images/bornes/') }}{{ tbornes[borne.id_borne].id }}.svg">
+                    <div class="texteborne"><a href="{{ path('app_jouer_revendiquerborne', {borne:borne.id_borne, partie:partie.id}) }}">Revendiquer</a></div>
+                {% elseif borne.position == 'J1' %}
+                    <img src="{{ asset('assets/images/bornesprises/') }}{{ tbornes[borne.id_borne].id }}.svg">
+                    <div class="texteborneprise">{{ partie.joueur1 }}</div>
+                {% elseif borne.position == 'J2' %}
+                    <img src="{{ asset('assets/images/bornesprises/') }}{{ tbornes[borne.id_borne].id }}.svg">
+                    <div class="texteborneprise">{{ partie.joueur2 }}</div>
+                {% endif %}
+
+            </div>
+        {% endfor %}
+
+
+
+    <!-- PIOCHE -->
+
+
+        {% if partie.pioche == true %}
+            <div class="pioche">
+                {% if partie.encours == 1 %}<a href="{{ path('piocher', {'partie': partie.id}) }}">Piocher</a>{% endif %}
+        {% else %}
+            <div class="piochevide">
+                <div class="vide">Pioche Vide</div>
+        {% endif %}
+        </div>
+    </div>
+    <br/>
+
+
+
+
+
+    <h2 id="vous">Vous<br>{{ user.username }}</h2>
+    {% if partie.encours == 1 %}
+    {% if montour == false %}
+        <div class="alert alert-danger">En attente de l'autre joueur</div>
+    {% endif %}
+    {% endif %}
+
+
+    <!-- TERRAIN PËRSO -->
+    <div class="terrain">
+        {% for i in 0..8 %}
+            <div class="colonne">
+                {% for carte_id in terrainencours['col'~i] %}
+
+                    {% if carte_id == 0 %}
+                        <div class="minicarte {% if montour == true %}zonelibre minicarte-libre{% endif %}" data-colonne = "{{ i }}">
+                            Libre
+                        </div>
+                    {% else %}
+                        <div class="minicarte">
+                            <img src="{{ asset('assets/images/cartes/') }}{{ tcartes[carte_id].id }}.svg">
+                            <!--<p class="numero">{{ tcartes[carte_id].numero }} . {{ tcartes[carte_id].id }}</p>-->
+                        </div>
+                    {% endif %}
+
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+
+
+    <!-- BORNES VALID PERSO -->
+
+    <!--<div class="bornes">
+        {% for borne in partie.listeDesBornes %}
+            <div class="borne">
+            {% if borne.position == nomencours %}
+                {{ tbornes[borne.id_borne].id }}
+                {% else %}
+                -
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>-->
+
+    <!-- MAIN PERSO -->
+    <div class="terrain">
+        {% for carte_id in mainencours %}
+            <div class="carte mescartes" data-carte="{{ carte_id }}">
+                <img src="{{ asset('assets/images/cartes/') }}{{ tcartes[carte_id].id }}.svg">
+                <a data-fancybox="gallery" href="{{ asset('assets/images/grandescartes/') }}{{ tcartes[carte_id].id }}.svg"><img class="loupe" src="{{ asset('assets/images/loupe') }}.svg"></a>
+                <!--<p class="numero">{{ tcartes[carte_id].numero }} . {{ tcartes[carte_id].id }}</p>-->
+            </div>
+        {% endfor %}
+    </div>
+</div>

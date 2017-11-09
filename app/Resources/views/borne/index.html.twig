@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Bornes list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Ordre</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for borne in bornes %}
+            <tr>
+                <td><a href="{{ path('administration_borne_show', { 'id': borne.id }) }}">{{ borne.id }}</a></td>
+                <td>{{ borne.ordre }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('administration_borne_show', { 'id': borne.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('administration_borne_edit', { 'id': borne.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('administration_borne_new') }}">Create a new borne</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:JouerController:nouvellePartie{% endblock %}
+
+{% block body %}<div class="accueil">
+    <div class="logoaccueil"><img src="{{ asset('assets/images/logo') }}.svg"></div>
+        <div class="pagelog">
+            <h1>nouvelle Partie</h1>
+                {{ form_start(form) }}      {# Ouverture du formulaire, balise form #}
+                    {{ form_widget(form) }} {# Ecriture des champs #}
+                    <input type="submit" id="_submit" value="Créer partie" /> {# ajout du champ submit #}
+                {{ form_end(form) }}        {# fermeture du formulaire #}
+        </div>
+    </div>
+{% endblock %}

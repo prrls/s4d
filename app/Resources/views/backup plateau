@@ -1,0 +1,201 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:JouerController:afficherPlateau{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .terrain {
+            clear: both;
+            width: 100%;
+            height: 80px;
+        }
+
+        .bornes {
+            width: 100%;
+            background-color: #0088CC;
+            padding: 0px;
+            clear: both;
+        }
+
+        .borne {
+            width: 120px;
+            height: 80px;
+            background-color: #66dd66;
+            float: left;
+            margin: 10px;
+            border-radius: 5px;
+        }
+
+        .minicarte {
+            width: 100px;
+            height: 40px;
+            border-width: 0.5px;
+            border: dotted;
+            margin: 5px auto;
+            border-radius: 5px;
+            text-align: center;
+
+        }
+
+        .carte {
+            width: 100px;
+            height: 40px;
+            background-color: #66dd66;
+            float: left;
+            margin: 10px;
+            border-radius: 5px;
+        }
+
+        .pioche {
+            width: 100px;
+            height: 140px;
+            background-color: #6153ed;
+            float: left;
+            margin: 10px;
+            border-radius: 5px;
+        }
+
+        .colonne {
+            float: left;
+            width: 120px;
+            /*background-color: #6c6159;*/
+            margin: 10px;
+
+        }
+    </style>
+{% endblock %}
+
+
+{% block body %}
+<!--    <h1>Partie en cours</h1>-->
+
+<div id="plateau">
+    <h2>Adversaire : {{ adversaire.username }}</h2>
+    <!--<div class="bornes">
+        {% for borne in partie.listeDesBornes %}
+            <div class="borne">
+                {% if borne.position == nomadversaire %}
+                {{ tbornes[borne.id_borne].id }}
+                {% else %}
+                -
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>-->
+    <div class="terrain">
+        {% for i in 1..9 %}
+            <div class="colonne">
+                {% for carte_id in terrainadversaire['col'~i] %}
+                        {% if carte_id == 0 %}
+                            <div class="minicarte">
+                            Libre
+                        {% else %}
+                            <div class="minicarte">
+                            <p class="numero">{{ tcartes[carte_id].numero }} . {{ tcartes[carte_id].id }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="bornes">
+        {% for borne in partie.listeDesBornes %}
+            <div class="borne">
+            {% if borne.position == 'neutre' %}
+                {{ tbornes[borne.id_borne].id }}
+                                 <p><a href="{{ path('app_jouer_revendiquerborne', {borne:borne.id_borne}) }}">Revendiquer</a></p>
+                {% else %}
+                -
+                {% endif %}
+
+            </div>
+        {% endfor %}
+
+        <div class="pioche">
+            <a href="{{ path('piocher', {'partie': partie.id}) }}">Piocher</a>
+        </div>
+    </div>
+    <br/>
+    <h2 style="clear: both">Vous : {{ user.username }}</h2>
+    {% if montour == false %}
+        <div class="alert alert-danger">En attente de l'autre joueur</div>
+    {% endif %}
+
+    <div class="terrain">
+        {% for i in 1..9 %}
+            <div class="colonne">
+                {% for carte_id in terrainencours['col'~i] %}
+
+                    {% if carte_id == 0 %}
+                        <div class="minicarte {% if montour == true %}zonelibre{% endif %}" data-colonne = "{{ i }}">
+                            Libre
+                        </div>
+                    {% else %}
+                        <div class="minicarte">
+                            <img src="{{ asset('/assets/images/cartes/') }}{{ tcartes[carte_id].id }}.png">
+                            <p class="numero">{{ tcartes[carte_id].numero }} . {{ tcartes[carte_id].id }}</p>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <!--<div class="bornes">
+        {% for borne in partie.listeDesBornes %}
+            <div class="borne">
+            {% if borne.position == nomencours %}
+                {{ tbornes[borne.id_borne].id }}
+                {% else %}
+                -
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>-->
+
+    <div class="terrain">
+        {% for carte_id in mainencours %}
+            <div class="carte mescartes" data-carte="{{ carte_id }}">
+                <p class="numero">{{ tcartes[carte_id].numero }} . {{ tcartes[carte_id].id }}</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+
+    {% if mainencours|length == 6 %}
+
+        <script>
+                $( function() {
+                    $( ".mescartes" ).draggable({ revert: "invalid" });
+
+                    $( ".zonelibre" ).droppable({
+                        classes: {
+                            "ui-droppable-active": "ui-state-active",
+                            "ui-droppable-hover": "ui-state-hover"
+                        },
+
+                        drop: function (event, ui) {
+                            $(this).addClass("ui-state-highlight");
+                            $.ajax({
+                                url: "{{ path('jouer_carte') }}",
+                                method: 'POST',
+                                data: {
+                                    colonne: $(this).data('colonne'),
+                                    carte: ui.draggable.data('carte'),
+                                    partie: {{ partie.id }}
+                                }
+                            })
+                            location.reload();
+
+                        }
+                    });
+                });
+        </script>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:JouerController:afficherPlateau{% endblock %}
+
+{% block stylesheets %}
+
+
+{% endblock %}
+
+
+{% block body %}
+    <div class="accueil">
+        <div class="logoaccueil"><img src="{{ asset('assets/images/logo') }}.svg"></div>
+        <div class="pagelog">
+            <h1>Mon profil administrateur</h1>
+
+            {% if user.username == 'pgommery' %}
+                <h2>Bienvenue M. Gommery !</h2>
+            {% elseif user.username == 'dannebicque' %}
+                <h2>Bienvenue M. Annebicque !</h2>
+            {% endif %}
+
+            <h2>{{ nbu }} profils utilisateurs</h2>
+                <ul>
+                    {% for joueur in tusers %}
+                        <li><p class="adminjoueur">&#8611; {{ joueur.id }} - {{ joueur }}</p>
+                        <a href="{{ path('supp_joueur', {joueur:joueur.id}) }}">Supprimer le joueur</a></li>
+                    {% endfor %}
+                </ul>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}

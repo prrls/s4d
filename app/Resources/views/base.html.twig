@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('assets/js/jquery-ui.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/rain.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/fancy.css') }}" />
+    {% block stylesheets %}{% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+</head>
+<body>
+
+<header>
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED")%}
+        <div class="log2"><div class="logtexte">
+            <img src="{{ asset('assets/images/picto_user') }}.svg"><a href="{{ path('profil') }}">Mon profil</a><br>
+            {% if is_granted('ROLE_ADMIN') %}
+                <img src="{{ asset('assets/images/picto_admin') }}.svg"><a href="{{ path('admin') }}">administrateur</a><br>
+            {% endif %}
+            <img src="{{ asset('assets/images/picto_connexion') }}.svg"><a href="{{ path('fos_user_security_logout') }}"> se déconnecter</a>
+        </div></div>
+    {% else %}
+        <div class="log"><div class="logtexte">
+            <img src="{{ asset('assets/images/picto_user') }}.svg"><a href="{{ path('fos_user_security_login') }}"> se connecter</a><br>
+            <img src="{{ asset('assets/images/picto_connexion') }}.svg"><a href="{{ path('fos_user_registration_register') }}"> créer un compte</a>
+        </div></div>
+    {% endif %}
+</header>
+{% block body %}{% endblock %}
+<script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
+<script src="{{ asset('assets/js/jquery-ui.min.js') }}"></script>
+<script src="{{ asset('assets/js/rain.js') }}"></script>
+<script src="{{ asset('assets/js/fancy.js') }}"></script>
+
+{% block javascripts %}{% endblock %}
+</body>
+</html>

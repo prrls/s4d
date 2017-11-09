@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Joueurs list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Pseudo</th>
+                <th>Mdp</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for joueur in joueurs %}
+            <tr>
+                <td><a href="{{ path('administration_joueur_show', { 'id': joueur.id }) }}">{{ joueur.id }}</a></td>
+                <td>{{ joueur.pseudo }}</td>
+                <td>{{ joueur.mdp }}</td>
+                <td>{{ joueur.email }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('administration_joueur_show', { 'id': joueur.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('administration_joueur_edit', { 'id': joueur.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('administration_joueur_new') }}">Create a new joueur</a>
+        </li>
+    </ul>
+{% endblock %}
